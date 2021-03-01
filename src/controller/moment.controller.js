@@ -1,4 +1,7 @@
+const fs = require('fs');
 const momentService = require('../service/monent.service');
+const FileService = require('../service/file.service');
+const { PICTURE_PATH } = require('../constants/file-path');
 
 class MonentController {
     async create(ctx, next) {
@@ -56,6 +59,19 @@ class MonentController {
           }
         }
         ctx.body = "给动态添加标签成功~";
+    }
+
+    async fileInfo(ctx, next) {
+        let { filename } = ctx.params;
+        const fileInfo = await fileService.getFileByFilename(filename);
+        const { type } = ctx.query;                         // http://localhost/moment/.../filename?type=small
+        const types = ["small", "middle", "large"];
+        if (types.some(item => item === type)) {
+          filename = filename + '-' + type;
+        }
+    
+        ctx.response.set('content-type', fileInfo.mimetype);
+        ctx.body = fs.createReadStream(`${PICTURE_PATH}/${filename}`);
     }
 }
 
