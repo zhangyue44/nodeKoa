@@ -7,6 +7,8 @@ class MomentService {
         return result[0] // result是数组，所以要取[0]  result[0]也是一个数组
     }
 
+    //  IF(1,2,3) 有三个参数，当参数1为真时，取参数2. 当参数1为假时，取参数3.
+
     async getMomentById(momentId) {
         const statement = `SELECT 
         m.id id, m.content content, m.createAt createTime, m.updateAt updateTime,
